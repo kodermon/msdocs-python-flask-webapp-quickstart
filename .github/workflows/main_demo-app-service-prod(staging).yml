@@ -51,6 +51,7 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -68,6 +69,13 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_42779F8D93144E8A8578741B5E4BD07D }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A8FB97DDC369401D86D634C78CFB41AE }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11153042E5CE43F0B356D3C4D966DA6F }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show  
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
